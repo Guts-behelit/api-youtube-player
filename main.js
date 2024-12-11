@@ -5,7 +5,8 @@ const axios = require('axios');
 const express = require('express');
 const app = express();
 const cors = require('cors');
-const PORT = 3000;
+require('dotenv').config();  // Carga las variables de entorno desde el archivo .env
+const PORT = process.env.PORT || 3000;  
 const processImage = async () => {
   const imageURL = 'https://via.placeholder.com/300'; // Cambia esta URL por tu imagen
 

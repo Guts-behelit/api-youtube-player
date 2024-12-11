@@ -14,7 +14,10 @@
     "axios": "^1.7.9",
     "colorthief": "^2.6.0",
     "cors": "^2.8.5",
-    "express": "^4.21.2",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2"
+  },
+  "devDependencies": {
     "nodemon": "^3.1.7"
   }
 }
