@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Texto a Voz Personalizado</title>
+</head>
+<body>
+  <h1>Texto a Voz Personalizado</h1>
+  
+  <textarea id="textToSpeak" rows="5" cols="30" placeholder="Escribe algo aquí..."></textarea><br>
+  
+  <label for="voiceSelect">Selecciona una voz:</label>
+  <select id="voiceSelect"></select><br>
+  
+  <button id="speakButton">🔊 Hablar</button>
+
+  <script>
+    if ('speechSynthesis' in window) {
+      const synth = window.speechSynthesis;
+
+      // Llenar la lista de voces disponibles
+      const voiceSelect = document.getElementById('voiceSelect');
+      let voices = [];
+
+      const populateVoices = () => {
+        voices = synth.getVoices();
+        voiceSelect.innerHTML = ''; // Limpiar opciones previas
+        voices.forEach(voice => {
+          const option = document.createElement('option');
+          option.textContent = `${voice.name} (${voice.lang})`;
+          option.value = voice.name;
+          voiceSelect.appendChild(option);
+        });
+      };
+
+      // Cargar voces cuando se cambian
+      synth.onvoiceschanged = populateVoices;
+
+      // Inicializar voces
+      populateVoices();
+
+      // Hablar el texto con la voz seleccionada
+      document.getElementById('speakButton').addEventListener('click', () => {
+        const text = document.getElementById('textToSpeak').value;
+        const selectedVoiceName = voiceSelect.value;
+        if (text && selectedVoiceName) {
+          const utterance = new SpeechSynthesisUtterance(text);
+          const selectedVoice = voices.find(voice => voice.name === selectedVoiceName);
+          utterance.voice = selectedVoice;  // Asignar la voz seleccionada
+          utterance.lang = selectedVoice.lang; // Asignar el idioma de la voz seleccionada
+          utterance.pitch = 1;  // Tono normal
+          utterance.rate = 1;   // Velocidad normal
+          utterance.volume = 1; // Volumen máximo
+          
+          synth.speak(utterance);
+        } else {
+          alert("Por favor, ingresa texto y selecciona una voz.");
+        }
+      });
+    } else {
+      alert("La API de texto a voz no está disponible en este navegador.");
+    }
+  </script>
+</body>
+</html>
+
